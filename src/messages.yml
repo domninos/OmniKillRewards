@@ -1,0 +1,21 @@
+prefix: '&7[&bKillRewards&7]'
+playerOnly: '&cOnly players can use this command.'
+playerNotFound: '&c%player% player was not found.'
+typeNotFound: '&c%type% type was not found.'
+notNumber: '%arg% is not a valid number.'
+noPerms: '&cYou lack the permission %permissionnode%!'
+added:
+  kills: '&aSuccessfully added %amount% to %player%. &b%before% &7-> &b%new%.'
+  deaths: '&aSuccessfully added %amount% to %player%. &b%before% &7-> &b%new%.'
+  kdr: '&aSuccessfully added %amount% to %player%. &b%before% &7-> &b%new%.'
+  killstreak: '&aSuccessfully added %amount% to %player%. &b%before% &7-> &b%new%.'
+removed:
+  kills: '&aSuccessfully removed %amount% from %player%. &b%before% &7-> &b%new%.'
+  deaths: '&aSuccessfully removed %amount% from %player%. &b%before% &7-> &b%new%.'
+  kdr: '&aSuccessfully removed %amount% from %player%. &b%before% &7-> &b%new%.'
+  killstreak: '&aSuccessfully removed %amount% from %player%. &b%before% &7-> &b%new%.'
+set:
+  kills: '&aSuccessfully set %player%s kills to %amount%. &b%before% &7-> &b%new%.'
+  deaths: '&aSuccessfully set %player%s deaths to %amount%. &b%before% &7-> &b%new%.'
+  kdr: '&aSuccessfully set %amount%s KDR to %amount%. &b%before% &7-> &b%new%.'
+  killstreak: '&aSuccessfully set %player%s KillStreak to %amount%. &b%before% &7-> &b%new%.'

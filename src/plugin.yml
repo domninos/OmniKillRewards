@@ -1,0 +1,12 @@
+name: OmniKillRewards
+main: net.omni.killrewards.KillRewardsPlugin
+author: omni
+depend: [MVdWPlaceholderAPI]
+version: '1.0'
+commands:
+  killrewards:
+    aliases:
+      - kr
+      - krewards
+      - rewards
+    description: Main command.
