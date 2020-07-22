@@ -1,6 +1,8 @@
 package net.omni.killrewards;
 
 import be.maximvdw.placeholderapi.PlaceholderAPI;
+import be.maximvdw.placeholderapi.PlaceholderOptions;
+import com.gmail.filoghost.holographicdisplays.placeholder.RelativePlaceholder;
 import net.omni.killrewards.commands.KillRewardsCommand;
 import net.omni.killrewards.handler.ConfigHandler;
 import net.omni.killrewards.handler.DatabaseHandler;
@@ -100,7 +102,7 @@ public class KillRewardsPlugin extends JavaPlugin {
     }
 
     public void registerPlaceHolders() {
-        PlaceholderAPI.registerPlaceholder(this, "valpsnetwork_kills", event -> {
+        PlaceholderAPI.registerPlaceholder(this, "{valpsnetwork_kills}", (event) -> {
             if (event.isOnline()) {
                 Player player = event.getPlayer();
 
@@ -113,7 +115,7 @@ public class KillRewardsPlugin extends JavaPlugin {
             }
 
             return "0";
-        });
+        }, PlaceholderOptions.RELATIONAL_PLACEHOLDER, PlaceholderOptions.ONLINE_PLACEHOLDER);
 
         PlaceholderAPI.registerPlaceholder(this, "valpsnetwork_deaths", event -> {
             if (event.isOnline()) {
@@ -128,7 +130,7 @@ public class KillRewardsPlugin extends JavaPlugin {
             }
 
             return "0";
-        });
+        }, PlaceholderOptions.RELATIONAL_PLACEHOLDER, PlaceholderOptions.ONLINE_PLACEHOLDER);
 
         PlaceholderAPI.registerPlaceholder(this, "valpsnetwork_kdr", event -> {
             if (event.isOnline()) {
@@ -143,7 +145,7 @@ public class KillRewardsPlugin extends JavaPlugin {
             }
 
             return "0";
-        });
+        }, PlaceholderOptions.RELATIONAL_PLACEHOLDER, PlaceholderOptions.ONLINE_PLACEHOLDER);
 
         PlaceholderAPI.registerPlaceholder(this, "valpsnetwork_kstreak", event -> {
             if (event.isOnline()) {
@@ -158,46 +160,38 @@ public class KillRewardsPlugin extends JavaPlugin {
             }
 
             return "0";
+        }, PlaceholderOptions.RELATIONAL_PLACEHOLDER, PlaceholderOptions.ONLINE_PLACEHOLDER);
+
+        PlaceholderAPI.registerPlaceholder(this, "valpsnetwork_bestks",
+                event -> getTopHandler().getTopKillStreakName() + getTopHandler().getTopKillStreak());
+
+        RelativePlaceholder.register(new RelativePlaceholder("{valpsnetwork_kills}") {
+            @Override
+            public String getReplacement(Player player) {
+                return player != null ? String.valueOf(getCacheUtil().getKills(player)) : "0";
+            }
         });
 
-        PlaceholderAPI.registerPlaceholder(this, "valpsnetwork_bestkills_name",
-                event -> getTopHandler().getTopKillsName());
+        RelativePlaceholder.register(new RelativePlaceholder("{valpsnetwork_deaths}") {
+            @Override
+            public String getReplacement(Player player) {
+                return player != null ? String.valueOf(getCacheUtil().getDeaths(player)) : "0";
+            }
+        });
 
-        PlaceholderAPI.registerPlaceholder(this, "valpsnetwork_bestkills_value",
-                event -> String.valueOf(getTopHandler().getTopKills()));
+        RelativePlaceholder.register(new RelativePlaceholder("{valpsnetwork_kdr}") {
+            @Override
+            public String getReplacement(Player player) {
+                return player != null ? String.valueOf(getCacheUtil().getKDR(player)) : "0";
+            }
+        });
 
-        PlaceholderAPI.registerPlaceholder(this, "valpsnetwork_bestdeaths_name",
-                event -> getTopHandler().getTopDeathsName());
-
-        PlaceholderAPI.registerPlaceholder(this, "valpsnetwork_bestdeaths_value",
-                event -> String.valueOf(getTopHandler().getTopDeaths()));
-
-        PlaceholderAPI.registerPlaceholder(this, "valpsnetwork_bestkdr_name",
-                event -> getTopHandler().getTopKDRName());
-
-        PlaceholderAPI.registerPlaceholder(this, "valpsnetwork_bestkdr_value",
-                event -> String.valueOf(getTopHandler().getTopKDR()));
-
-        PlaceholderAPI.registerPlaceholder(this, "valpsnetwork_bestks_name",
-                event -> getTopHandler().getTopKillStreakName());
-
-        PlaceholderAPI.registerPlaceholder(this, "valpsnetwork_bestks_value",
-                event -> String.valueOf(getTopHandler().getTopKillStreak()));
-
-        //%leaderheads_name_<statistic>_<time>_<rank>%
-
-        // TODO get killslist
-        /*
-        The components of the placeholders:
-<statistic>: the name of your statistic, but without any %, { or } characters. For example, %vault_eco_balance% becomes vault_eco_balance and {stat_walk_cm} becomes stat_walk_cm.
-<time>: which timetype of the leaderboard to show. Options: alltime, daily, weekly, monthly, yearly.
-<rank>: which rank in the leaderboard to show. Must be a number.
-
-MVdWPlaceholderAPI placeholders
-{leaderheads_name_<statistic>_<time>_<rank>} shows the name of the player in the leaderboard. {leaderheads_value_<statistic>_<time>_<rank>} shows the value of the player in the leaderboard
-
-Example: {leaderheads_name_statistic_player_kills_daily_5} shows the 5th player in the daily kills leaderboard based on the %statistic_player_kills% placeholder of the Statistic expansion.
-         */
+        RelativePlaceholder.register(new RelativePlaceholder("{valpsnetwork_kstreak}") {
+            @Override
+            public String getReplacement(Player player) {
+                return player != null ? String.valueOf(getCacheUtil().getKillStreak(player)) : "0";
+            }
+        });
         sendConsole("&aSuccessfully registered placeholders.");
     }
 

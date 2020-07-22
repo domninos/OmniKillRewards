@@ -32,16 +32,19 @@ public class TopHandler {
         this.topKillsName = name;
         this.topKills = top;
 
-        Bukkit.getScheduler().runTaskAsynchronously(plugin,
-                () -> plugin.getDatabaseUtil().setTop(name, "kills", topKills));
+        plugin.getDatabaseUtil().setTop(name, "kills", topKills);
     }
 
     public void updateTopKills() {
         String string = plugin.getDatabaseUtil().getTop("kills");
         String[] split = string.split(":");
 
-        this.topKillsName = split[0];
-        this.topKills = Integer.parseInt(split[1]);
+        try {
+            this.topKillsName = split[0];
+            this.topKills = Integer.parseInt(split[1]);
+        } catch (ArrayIndexOutOfBoundsException ignore) {
+            // first run
+        }
     }
 
     public String getTopKillsName() {
@@ -64,8 +67,12 @@ public class TopHandler {
         String string = plugin.getDatabaseUtil().getTop("deaths");
         String[] split = string.split(":");
 
-        this.topDeathsName = split[0];
-        this.topKills = Integer.parseInt(split[1]);
+        try {
+            this.topDeathsName = split[0];
+            this.topKills = Integer.parseInt(split[1]);
+        } catch (ArrayIndexOutOfBoundsException ignore) {
+            // first run
+        }
     }
 
     public String getTopDeathsName() {
@@ -81,15 +88,19 @@ public class TopHandler {
         this.topKDR = top;
 
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () ->
-                plugin.getDatabaseUtil().setTop(name, "kdr", topKDR));
+                plugin.getDatabaseUtil().setTopKDR(name, topKDR));
     }
 
     public void updateTopKDR() {
         String string = plugin.getDatabaseUtil().getTop("kdr");
         String[] split = string.split(":");
 
-        this.topKDRName = split[0];
-        this.topKDR = Integer.parseInt(split[1]);
+        try {
+            this.topKDRName = split[0];
+            this.topKDR = Integer.parseInt(split[1]);
+        } catch (ArrayIndexOutOfBoundsException ignore) {
+            // first run
+        }
     }
 
     public String getTopKDRName() {
@@ -110,11 +121,14 @@ public class TopHandler {
 
     public void updateTopKillStreak() {
         String string = plugin.getDatabaseUtil().getTop("killstreak");
-
         String[] split = string.split(":");
 
-        this.topKillStreakName = split[0];
-        this.topKillStreak = Integer.parseInt(split[1]);
+        try {
+            this.topKillStreakName = split[0];
+            this.topKillStreak = Integer.parseInt(split[1]);
+        } catch (ArrayIndexOutOfBoundsException ignore) {
+            // first run
+        }
     }
 
     public String getTopKillStreakName() {

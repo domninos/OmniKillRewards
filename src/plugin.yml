@@ -1,7 +1,7 @@
 name: OmniKillRewards
 main: net.omni.killrewards.KillRewardsPlugin
 author: omni
-depend: [MVdWPlaceholderAPI]
+depend: [MVdWPlaceholderAPI, HolographicDisplays]
 version: '1.0'
 commands:
   killrewards:

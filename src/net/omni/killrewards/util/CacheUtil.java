@@ -38,29 +38,17 @@ public class CacheUtil {
     }
 
     public void shutdownSave() {
-        for (Map.Entry<UUID, Integer> entry : playerKills.entrySet()) {
-            String name = plugin.getDatabaseUtil().getName(entry.getKey().toString());
+        for (Map.Entry<UUID, Integer> entry : playerKills.entrySet())
+            plugin.getDatabaseUtil().setKills(entry.getKey(), entry.getValue());
 
-            plugin.getDatabaseUtil().setKills(name, entry.getValue());
-        }
+        for (Map.Entry<UUID, Integer> entry : playerDeaths.entrySet())
+            plugin.getDatabaseUtil().setDeaths(entry.getKey(), entry.getValue());
 
-        for (Map.Entry<UUID, Integer> entry : playerDeaths.entrySet()) {
-            String name = plugin.getDatabaseUtil().getName(entry.getKey().toString());
+        for (Map.Entry<UUID, Double> entry : playerKDR.entrySet())
+            plugin.getDatabaseUtil().setKDR(entry.getKey(), entry.getValue());
 
-            plugin.getDatabaseUtil().setDeaths(name, entry.getValue());
-        }
-
-        for (Map.Entry<UUID, Double> entry : playerKDR.entrySet()) {
-            String name = plugin.getDatabaseUtil().getName(entry.getKey().toString());
-
-            plugin.getDatabaseUtil().setKDR(name, entry.getValue());
-        }
-
-        for (Map.Entry<UUID, Integer> entry : playerKillStreak.entrySet()) {
-            String name = plugin.getDatabaseUtil().getName(entry.getKey().toString());
-
-            plugin.getDatabaseUtil().setKillStreak(name, entry.getValue());
-        }
+        for (Map.Entry<UUID, Integer> entry : playerKillStreak.entrySet())
+            plugin.getDatabaseUtil().setKillStreak(entry.getKey(), entry.getValue());
 
         flush();
     }
@@ -98,8 +86,12 @@ public class CacheUtil {
             }
         }
 
-        if (plugin.getTopHandler().getTopKills() != top)
-            plugin.getTopHandler().setTopKills(fromPlayer, top);
+        if (plugin.getTopHandler().getTopKills() != top) {
+            final String from = fromPlayer;
+            final int finalTop = top;
+            Bukkit.getScheduler().runTaskAsynchronously(plugin,
+                    () -> plugin.getTopHandler().setTopKills(from, finalTop));
+        }
     }
 
     public void removeKills(Player player, int kills) {
@@ -137,8 +129,12 @@ public class CacheUtil {
             }
         }
 
-        if (plugin.getTopHandler().getTopDeaths() != top)
-            plugin.getTopHandler().setTopDeaths(fromPlayer, top);
+        if (plugin.getTopHandler().getTopKills() != top) {
+            final String from = fromPlayer;
+            final int finalTop = top;
+            Bukkit.getScheduler().runTaskAsynchronously(plugin,
+                    () -> plugin.getTopHandler().setTopDeaths(from, finalTop));
+        }
     }
 
     public void removeDeaths(Player player, int deaths) {
@@ -205,8 +201,12 @@ public class CacheUtil {
             }
         }
 
-        if (plugin.getTopHandler().getTopKDR() != top)
-            plugin.getTopHandler().setTopKDR(fromPlayer, top);
+        if (plugin.getTopHandler().getTopKills() != top) {
+            final String from = fromPlayer;
+            final double finalTop = top;
+            Bukkit.getScheduler().runTaskAsynchronously(plugin,
+                    () -> plugin.getTopHandler().setTopKDR(from, finalTop));
+        }
     }
 
     public void loadKillStreak(Player player) {
@@ -235,8 +235,12 @@ public class CacheUtil {
             }
         }
 
-        if (plugin.getTopHandler().getTopKillStreak() != top)
-            plugin.getTopHandler().setTopKS(fromPlayer, top);
+        if (plugin.getTopHandler().getTopKills() != top) {
+            final String from = fromPlayer;
+            final int finalTop = top;
+            Bukkit.getScheduler().runTaskAsynchronously(plugin,
+                    () -> plugin.getTopHandler().setTopKS(from, finalTop));
+        }
     }
 
     public void removeKillStreak(Player player, int killStreak) {

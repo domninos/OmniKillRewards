@@ -30,8 +30,14 @@ public class PlayerKillListener implements Listener {
                 return;
 
             if (killedKiller.getName().equals(killer.getName())) { // same person was killed by the killer
-                if (plugin.getCooldownUtil().inCooldown(killer)) // player is in cooldown = no reward;
+                if (plugin.getCooldownUtil().inCooldown(killer)) { // player is in cooldown = no reward;
+                    plugin.sendMessage(killer,
+                            plugin.getMessagesUtil().getCooldownMsg().
+                                    replace("%player%", player.getName()).
+                                    replace("%cooldown%",
+                                            "" + plugin.getCooldownUtil().getCooldown(killer)));
                     return;
+                }
             }
         }
 
@@ -51,6 +57,11 @@ public class PlayerKillListener implements Listener {
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
                 plugin.getConfigHandler().getString("command_money").
                         replace("%killer%", killer.getName()));
+        plugin.sendMessage(killer,
+                plugin.getMessagesUtil().getKilled().replace("%player%", player.getName()));
+        Bukkit.broadcastMessage(plugin.getMessagesUtil().getBroadcastKilled().
+                replace("%killer%", killer.getName()).
+                replace("%killed%", player.getName()));
     }
 
     public void register() {

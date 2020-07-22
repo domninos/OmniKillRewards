@@ -42,14 +42,26 @@ public class DatabaseUtil {
         plugin.sendConsole("&aSuccessfully loaded " + statsTopTable + " table.");
     }
 
-    public void setTop(String name, String stat, double value) {
-        plugin.getDatabaseHandler().query("INSERT IGNORE INTO `" + statsTopTable
-                + "` (`kills`,`deaths`,`kdr`,`killstreak`) "
-                + "VALUES ('none','none','none','none');");
+    public void setTop(String name, String stat, int value) {
+        if (getTop(stat).equals("none"))
+            plugin.getDatabaseHandler().query("INSERT IGNORE INTO `" + statsTopTable
+                    + "` (`kills`,`deaths`,`kdr`,`killstreak`) "
+                    + "VALUES ('none:0','none:0','none:0','none:0');");
 
         plugin.getDatabaseHandler().
                 query("UPDATE `" + statsTopTable + "` SET `" + stat + "`='" + name + ":" + value + "';");
-        plugin.sendConsole("&Successfully set top " + stat + "  to " + name + ":" + value);
+        plugin.sendConsole("&aSuccessfully set top " + stat + "  to " + name + ":" + value);
+    }
+
+    public void setTopKDR(String name, double value) {
+        if (getTop("kdr").equals("none"))
+            plugin.getDatabaseHandler().query("INSERT IGNORE INTO `" + statsTopTable
+                    + "` (`kills`,`deaths`,`kdr`,`killstreak`) "
+                    + "VALUES ('none:0','none:0','none:0','none:0');");
+
+        plugin.getDatabaseHandler().
+                query("UPDATE `" + statsTopTable + "` SET `kdr`='" + name + ":" + value + "';");
+        plugin.sendConsole("&aSuccessfully set top KDR to " + name + ":" + value);
     }
 
     public String getTop(String stat) {
@@ -62,6 +74,7 @@ public class DatabaseUtil {
         } catch (SQLException e) {
             plugin.sendConsole("&ACouldn't fetch from database. " + e.getMessage());
             e.printStackTrace();
+            return "none";
         }
 
         return "none";
@@ -131,6 +144,11 @@ public class DatabaseUtil {
         plugin.sendConsole("&aSuccessfully set kills of " + name + " to " + kills);
     }
 
+    public void setKills(UUID uuid, int kills) {
+        plugin.getDatabaseHandler().
+                query("UPDATE `" + table_name + "` SET `kills`='" + kills + "' WHERE `uuid`='" + uuid.toString() + "';");
+    }
+
     public int getDeaths(String name) {
         try {
             ResultSet rs = plugin.getDatabaseHandler().
@@ -150,6 +168,11 @@ public class DatabaseUtil {
         plugin.getDatabaseHandler().
                 query("UPDATE `" + table_name + "` SET `deaths`='" + deaths + "' WHERE `name`='" + name + "';");
         plugin.sendConsole("&aSuccessfully set deaths of " + name + " to " + deaths);
+    }
+
+    public void setDeaths(UUID uuid, int deaths) {
+        plugin.getDatabaseHandler().
+                query("UPDATE `" + table_name + "` SET `deaths`='" + deaths + "' WHERE `uuid`='" + uuid.toString() + "';");
     }
 
     public double getKDR(String name) {
@@ -173,6 +196,11 @@ public class DatabaseUtil {
         plugin.sendConsole("&ASuccessfully set " + name + "'s KDR to " + kdr);
     }
 
+    public void setKDR(UUID uuid, double kdr) {
+        plugin.getDatabaseHandler().
+                query("UPDATE `" + table_name + "` SET `kdr`='" + kdr + "' WHERE `uuid`='" + uuid.toString() + "';");
+    }
+
     public int getKillStreak(String name) {
         try {
             ResultSet rs = plugin.getDatabaseHandler().
@@ -192,6 +220,11 @@ public class DatabaseUtil {
         plugin.getDatabaseHandler().
                 query("UPDATE `" + table_name + "` SET `killstreak`='" + killStreak + "' WHERE `name`='" + name + "';");
         plugin.sendConsole("&aSuccessfully set " + name + "'s killstreak to " + killStreak);
+    }
+
+    public void setKillStreak(UUID uuid, int killStreak) {
+        plugin.getDatabaseHandler().
+                query("UPDATE `" + table_name + "` SET `killstreak`='" + killStreak + "' WHERE `uuid`='" + uuid.toString() + "';");
     }
 
     public String getTable() {

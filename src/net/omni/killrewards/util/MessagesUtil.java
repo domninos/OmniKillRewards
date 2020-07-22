@@ -10,6 +10,10 @@ public class MessagesUtil {
     private String typeNotFound;
     private String notNumber;
     private String noPerms;
+    private String killed;
+    private String broadcastKilled;
+    private String cooldownMsg;
+
     private String addedKills;
     private String addedDeaths;
     private String addedKDR;
@@ -31,10 +35,14 @@ public class MessagesUtil {
 
     public void load() {
         this.prefix = getString("prefix");
+        this.playerOnly = getString("playerOnly");
         this.playerNotFound = getString("playerNotFound");
         this.typeNotFound = getString("typeNotFound");
         this.notNumber = getString("notNumber");
         this.noPerms = getString("noPerms");
+        this.killed = getString("killed");
+        this.broadcastKilled = getString("broadcastKilled");
+        this.cooldownMsg = getString("cooldownMsg");
 
         this.addedKills = getString("added.kills");
         this.addedDeaths = getString("added.deaths");
@@ -74,6 +82,18 @@ public class MessagesUtil {
 
     public String getNoPerms() {
         return noPerms;
+    }
+
+    public String getKilled() {
+        return killed;
+    }
+
+    public String getBroadcastKilled() {
+        return broadcastKilled;
+    }
+
+    public String getCooldownMsg() {
+        return cooldownMsg;
     }
 
     public String getAddedKills() {
