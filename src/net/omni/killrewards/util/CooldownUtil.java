@@ -4,35 +4,37 @@ import net.omni.killrewards.KillRewardsPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
 public class CooldownUtil {
-    private final Map<Player, Instant> COOLDOWNS = new HashMap<>();
+    private final Map<Player, Integer> COOLDOWNS = new HashMap<>();
 
     public CooldownUtil(KillRewardsPlugin plugin) {
         Bukkit.getScheduler().runTaskTimer(plugin, () -> {
-            for (Map.Entry<Player, Instant> cd : COOLDOWNS.entrySet()) {
-                if (cd.getValue().isBefore(Instant.now())) {
+            for (Map.Entry<Player, Integer> cd : COOLDOWNS.entrySet()) {
+                if (cd.getValue() <= 0) {
                     removeCooldown(cd.getKey());
                     plugin.getKillUtil().removeKilled(cd.getKey());
+                    continue;
                 }
+
+                cd.setValue(cd.getValue() - 1);
             }
         }, 20, 20);
     }
 
     public int getCooldown(Player player) {
-        return inCooldown(player) ? COOLDOWNS.get(player).compareTo(Instant.now()) : -1;
+        return inCooldown(player) ? COOLDOWNS.get(player) : -1;
     }
 
     public void addCooldown(Player player, int seconds) {
         if (inCooldown(player)) {
-            Instant cooldown = COOLDOWNS.get(player);
-            Instant added = cooldown.plusSeconds(seconds);
+            int cooldown = COOLDOWNS.get(player);
+            int added = cooldown + seconds;
             COOLDOWNS.put(player, added);
         } else
-            COOLDOWNS.put(player, Instant.now());
+            COOLDOWNS.put(player, seconds);
     }
 
     public void removeCooldown(Player player) {
@@ -46,7 +48,9 @@ public class CooldownUtil {
         if (!inCooldown(player))
             return;
 
-        COOLDOWNS.put(player, COOLDOWNS.get(player).minusSeconds(seconds));
+        int cooldown = COOLDOWNS.get(player);
+        int subtracted = cooldown - seconds;
+        COOLDOWNS.put(player, subtracted);
     }
 
     public boolean inCooldown(Player player) {

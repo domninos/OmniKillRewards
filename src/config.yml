@@ -5,4 +5,4 @@ database:
   username: root
   password: ''
 cooldown-time: 5
-command_money: '/eco give %killer% %amount%'
+command_money: 'eco give %killer% amount'

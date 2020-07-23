@@ -2,9 +2,11 @@ package net.omni.killrewards.listener;
 
 import net.omni.killrewards.KillRewardsPlugin;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
 public class PlayerKillListener implements Listener {
@@ -19,6 +21,19 @@ public class PlayerKillListener implements Listener {
     public void onPlayerKill(PlayerDeathEvent event) {
         Player player = event.getEntity();
         Player killer = player.getKiller();
+
+        if (killer == null) {
+            if (player.getLastDamageCause() instanceof EntityDamageByEntityEvent) {
+                EntityDamageByEntityEvent entityEvent = (EntityDamageByEntityEvent) player.getLastDamageCause();
+
+                if (entityEvent.getDamager() instanceof Arrow) {
+                    Arrow arrow = (Arrow) entityEvent.getDamager();
+
+                    if (arrow.getShooter() instanceof Player)
+                        killer = (Player) arrow.getShooter();
+                }
+            }
+        }
 
         if (killer == null)
             return;
@@ -38,6 +53,9 @@ public class PlayerKillListener implements Listener {
                                             "" + plugin.getCooldownUtil().getCooldown(killer)));
                     return;
                 }
+            } else if (plugin.getCooldownUtil().inCooldown(killer)) {
+                plugin.getCooldownUtil().removeCooldown(killer);
+                plugin.sendMessage(killer, plugin.getMessagesUtil().getCooldownReset());
             }
         }
 
@@ -57,8 +75,10 @@ public class PlayerKillListener implements Listener {
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
                 plugin.getConfigHandler().getString("command_money").
                         replace("%killer%", killer.getName()));
+
         plugin.sendMessage(killer,
                 plugin.getMessagesUtil().getKilled().replace("%player%", player.getName()));
+
         Bukkit.broadcastMessage(plugin.getMessagesUtil().getBroadcastKilled().
                 replace("%killer%", killer.getName()).
                 replace("%killed%", player.getName()));

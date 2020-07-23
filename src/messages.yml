@@ -7,6 +7,7 @@ noPerms: '&cYou lack the permission %permissionnode%!'
 killed: '&cYou have killed %player% for 1$!'
 broadcastKilled: '&c%killer% has killed %killed% and received 1$!'
 cooldownMsg: '&aYou cannot kill %player% for %cooldown% seconds!'
+cooldownReset: '&aYour cooldown has reset.'
 added:
   kills: '&aSuccessfully added %amount% to %player%. &b%before% &7-> &b%new%.'
   deaths: '&aSuccessfully added %amount% to %player%. &b%before% &7-> &b%new%.'

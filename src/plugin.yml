@@ -1,10 +1,11 @@
-name: OmniKillRewards
+name: ValpsKillRewards
 main: net.omni.killrewards.KillRewardsPlugin
 author: omni
 depend: [MVdWPlaceholderAPI, HolographicDisplays]
 version: '1.0'
 commands:
   killrewards:
+    usage: /<command>
     aliases:
       - kr
       - krewards

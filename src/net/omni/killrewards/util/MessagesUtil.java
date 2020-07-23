@@ -13,6 +13,7 @@ public class MessagesUtil {
     private String killed;
     private String broadcastKilled;
     private String cooldownMsg;
+    private String cooldownReset;
 
     private String addedKills;
     private String addedDeaths;
@@ -43,6 +44,7 @@ public class MessagesUtil {
         this.killed = getString("killed");
         this.broadcastKilled = getString("broadcastKilled");
         this.cooldownMsg = getString("cooldownMsg");
+        this.cooldownReset = getString("cooldownReset");
 
         this.addedKills = getString("added.kills");
         this.addedDeaths = getString("added.deaths");
@@ -94,6 +96,10 @@ public class MessagesUtil {
 
     public String getCooldownMsg() {
         return cooldownMsg;
+    }
+
+    public String getCooldownReset() {
+        return cooldownReset;
     }
 
     public String getAddedKills() {

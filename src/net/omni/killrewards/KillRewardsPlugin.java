@@ -1,7 +1,6 @@
 package net.omni.killrewards;
 
 import be.maximvdw.placeholderapi.PlaceholderAPI;
-import be.maximvdw.placeholderapi.PlaceholderOptions;
 import com.gmail.filoghost.holographicdisplays.placeholder.RelativePlaceholder;
 import net.omni.killrewards.commands.KillRewardsCommand;
 import net.omni.killrewards.handler.ConfigHandler;
@@ -57,10 +56,9 @@ public class KillRewardsPlugin extends JavaPlugin {
 
         if (Bukkit.getPluginManager().isPluginEnabled("MVdWPlaceholderAPI"))
             registerPlaceHolders();
-        else {
-            sendConsole("&cMVdWPlaceholderAPI not found.");
-            return;
-        }
+
+        if (Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays"))
+            registerHoloPlaceholders();
 
         this.topHandler = new TopHandler(this);
 
@@ -68,7 +66,7 @@ public class KillRewardsPlugin extends JavaPlugin {
 
         registerListeners();
         registerCommands();
-        sendConsole("&aSuccessfully enabled OmniKillRewards v" + this.getDescription().getVersion());
+        sendConsole("&aSuccessfully enabled ValpsKillRewards v" + this.getDescription().getVersion());
 
         Runtime.getRuntime().addShutdownHook(hook = new Thread(() -> cacheUtil.shutdownSave()));
         sendConsole("&aAdded shutdown hook.");
@@ -86,7 +84,7 @@ public class KillRewardsPlugin extends JavaPlugin {
         sendConsole("&aSuccessfully removed shutdown hook.");
 
         cacheUtil.flush();
-        sendConsole("&aSuccessfully disabled OmniKillRewards");
+        sendConsole("&aSuccessfully disabled ValpsKillRewards");
     }
 
     public void sendConsole(String msg) {
@@ -102,7 +100,7 @@ public class KillRewardsPlugin extends JavaPlugin {
     }
 
     public void registerPlaceHolders() {
-        PlaceholderAPI.registerPlaceholder(this, "{valpsnetwork_kills}", (event) -> {
+        PlaceholderAPI.registerPlaceholder(this, "valpsnetwork_kills", (event) -> {
             if (event.isOnline()) {
                 Player player = event.getPlayer();
 
@@ -115,7 +113,7 @@ public class KillRewardsPlugin extends JavaPlugin {
             }
 
             return "0";
-        }, PlaceholderOptions.RELATIONAL_PLACEHOLDER, PlaceholderOptions.ONLINE_PLACEHOLDER);
+        });
 
         PlaceholderAPI.registerPlaceholder(this, "valpsnetwork_deaths", event -> {
             if (event.isOnline()) {
@@ -130,7 +128,7 @@ public class KillRewardsPlugin extends JavaPlugin {
             }
 
             return "0";
-        }, PlaceholderOptions.RELATIONAL_PLACEHOLDER, PlaceholderOptions.ONLINE_PLACEHOLDER);
+        });
 
         PlaceholderAPI.registerPlaceholder(this, "valpsnetwork_kdr", event -> {
             if (event.isOnline()) {
@@ -145,7 +143,7 @@ public class KillRewardsPlugin extends JavaPlugin {
             }
 
             return "0";
-        }, PlaceholderOptions.RELATIONAL_PLACEHOLDER, PlaceholderOptions.ONLINE_PLACEHOLDER);
+        });
 
         PlaceholderAPI.registerPlaceholder(this, "valpsnetwork_kstreak", event -> {
             if (event.isOnline()) {
@@ -160,11 +158,12 @@ public class KillRewardsPlugin extends JavaPlugin {
             }
 
             return "0";
-        }, PlaceholderOptions.RELATIONAL_PLACEHOLDER, PlaceholderOptions.ONLINE_PLACEHOLDER);
+        });
 
-        PlaceholderAPI.registerPlaceholder(this, "valpsnetwork_bestks",
-                event -> getTopHandler().getTopKillStreakName() + getTopHandler().getTopKillStreak());
+        sendConsole("&aSuccessfully registered placeholders.");
+    }
 
+    public void registerHoloPlaceholders() {
         RelativePlaceholder.register(new RelativePlaceholder("{valpsnetwork_kills}") {
             @Override
             public String getReplacement(Player player) {
@@ -192,7 +191,8 @@ public class KillRewardsPlugin extends JavaPlugin {
                 return player != null ? String.valueOf(getCacheUtil().getKillStreak(player)) : "0";
             }
         });
-        sendConsole("&aSuccessfully registered placeholders.");
+
+        sendConsole("&aSuccessfully registered placeholders to HolographicDisplays.");
     }
 
     public void registerListeners() {
