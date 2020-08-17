@@ -20,7 +20,6 @@ public class DatabaseUtil {
         loadDatabase();
     }
 
-    // TODO
     private void loadDatabase() {
         plugin.getDatabaseHandler().query("CREATE TABLE IF NOT EXISTS `" + table_name + "` ( " +
                 "`uuid` varchar(512) NOT NULL, " +

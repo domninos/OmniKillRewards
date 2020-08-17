@@ -8,8 +8,8 @@ import java.util.Map;
 public class KillUtil {
     private final Map<Player, Player> PLAYERKILLED = new HashMap<>();
 
-    public Player getKilled(Player player) {
-        return PLAYERKILLED.getOrDefault(player, null);
+    public Player getKilled(Player killer) {
+        return PLAYERKILLED.getOrDefault(killer, null);
     }
 
     public Player getKiller(Player player) {
@@ -35,12 +35,15 @@ public class KillUtil {
         return PLAYERKILLED.containsValue(killed);
     }
 
+    public boolean isKiller(Player killer) {
+        return PLAYERKILLED.containsKey(killer);
+    }
+
     public void setKilled(Player player, Player killed) {
         PLAYERKILLED.put(player, killed);
     }
 
     public void removeKilled(Player player) { // cooldown passed
-        if (wasKilled(player))
-            PLAYERKILLED.remove(player);
+        PLAYERKILLED.remove(player);
     }
 }

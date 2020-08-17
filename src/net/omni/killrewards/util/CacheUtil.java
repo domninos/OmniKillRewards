@@ -4,6 +4,7 @@ import net.omni.killrewards.KillRewardsPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -14,6 +15,7 @@ public class CacheUtil {
     private final Map<UUID, Double> playerKDR;
     private final Map<UUID, Integer> playerKillStreak;
     private final KillRewardsPlugin plugin;
+    private final DecimalFormat decimalFormat;
 
     public CacheUtil(KillRewardsPlugin plugin) {
         // TODO save every 10 mins
@@ -23,6 +25,7 @@ public class CacheUtil {
         this.playerKDR = new HashMap<>();
         this.playerKillStreak = new HashMap<>();
         this.plugin = plugin;
+        this.decimalFormat = new DecimalFormat(".00");
     }
 
     public void load(Player player) {
@@ -186,10 +189,8 @@ public class CacheUtil {
                 setKDR(player, 0.0);
             else
                 setKDR(player, kills);
-        } else {
-            double kdr = kills / deaths;
-            setKDR(player, kdr);
-        }
+        } else
+            setKDR(player, Double.parseDouble(decimalFormat.format(kills / deaths)));
 
         String fromPlayer = "none";
         double top = 0;

@@ -14,8 +14,9 @@ public class CooldownUtil {
         Bukkit.getScheduler().runTaskTimer(plugin, () -> {
             for (Map.Entry<Player, Integer> cd : COOLDOWNS.entrySet()) {
                 if (cd.getValue() <= 0) {
-                    removeCooldown(cd.getKey());
+                    plugin.sendMessage(cd.getKey(), plugin.getMessagesUtil().getCooldownReset());
                     plugin.getKillUtil().removeKilled(cd.getKey());
+                    removeCooldown(cd.getKey());
                     continue;
                 }
 
@@ -38,9 +39,6 @@ public class CooldownUtil {
     }
 
     public void removeCooldown(Player player) {
-        if (!inCooldown(player))
-            return;
-
         COOLDOWNS.remove(player);
     }
 

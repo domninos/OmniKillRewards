@@ -1,10 +1,7 @@
 package net.omni.killrewards.commands;
 
 import net.omni.killrewards.KillRewardsPlugin;
-import net.omni.killrewards.commands.sub.AddSubCommand;
-import net.omni.killrewards.commands.sub.RemoveSubCommand;
-import net.omni.killrewards.commands.sub.SetSubCommand;
-import net.omni.killrewards.commands.sub.TypesSubCommand;
+import net.omni.killrewards.commands.sub.*;
 import net.omni.killrewards.commands.util.MainCommand;
 import org.bukkit.entity.Player;
 
@@ -14,7 +11,7 @@ public class KillRewardsCommand extends MainCommand {
     public KillRewardsCommand(KillRewardsPlugin plugin) {
         super(plugin, Arrays.asList(
                 new AddSubCommand(plugin), new SetSubCommand(plugin), new RemoveSubCommand(plugin),
-                new TypesSubCommand(plugin)
+                new TypesSubCommand(plugin), new ReloadSubCommand(plugin)
         ));
     }
 
@@ -39,7 +36,8 @@ public class KillRewardsCommand extends MainCommand {
                 + "&b/killrewards add <type> <player> <amount> » Adds the type to the specified player.\n"
                 + "&b/killrewards set <type> <player> <amount> » Sets the type to the specified player.\n"
                 + "&b/killrewards remove <type> <player> <amount> » Removes the type to the specified player.\n"
-                + "&b/killrewards types » Shows the list of types available.\n";
+                + "&b/killrewards types » Shows the list of types available.\n"
+                + "&b/killrewards reload » Reloads messages.yml.\n";
     }
 
     @Override
